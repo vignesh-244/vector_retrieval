@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Search</title>
+    <style>
+        :root {
+            --bg: #f4efe7;
+            --card: #fffaf4;
+            --text: #1f1f1f;
+            --accent: #b85c38;
+            --border: #e4d5c3;
+        }
+
+        body {
+            margin: 0;
+            font-family: Georgia, serif;
+            background: linear-gradient(135deg, #f4efe7 0%, #efe2d0 100%);
+            color: var(--text);
+        }
+
+        .container {
+            max-width: 760px;
+            margin: 60px auto;
+            padding: 24px;
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 24px;
+            box-shadow: 0 12px 30px rgba(80, 54, 35, 0.08);
+        }
+
+        h1 {
+            margin-top: 0;
+            font-size: 32px;
+        }
+
+        p {
+            line-height: 1.6;
+        }
+
+        form {
+            display: flex;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        input {
+            flex: 1;
+            padding: 12px 14px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-size: 16px;
+        }
+
+        button {
+            border: none;
+            background: var(--accent);
+            color: white;
+            padding: 12px 18px;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .result {
+            border-top: 1px solid var(--border);
+            padding: 16px 0;
+        }
+
+        .result:first-child {
+            border-top: none;
+        }
+
+        .meta {
+            color: #6a5b4d;
+            font-size: 14px;
+        }
+
+        .empty {
+            color: #6a5b4d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>Semantic Document Search</h1>
+            <p>Search across the text files in the <code>documents</code> folder using a simple custom TF-IDF and cosine similarity pipeline.</p>
+
+            <form id="search-form">
+                <input id="query" type="text" placeholder="Try: artificial intelligence in finance" required>
+                <button type="submit">Search</button>
+            </form>
+
+            <div id="results" class="empty">Enter a query to see the top matching documents.</div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById("search-form");
+        const queryInput = document.getElementById("query");
+        const resultsBox = document.getElementById("results");
+
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            const query = queryInput.value.trim();
+            if (!query) {
+                return;
+            }
+
+            resultsBox.innerHTML = "Searching...";
+
+            const response = await fetch(`/search?q=${encodeURIComponent(query)}`);
+            const data = await response.json();
+
+            if (!data.results || data.results.length === 0) {
+                resultsBox.innerHTML = '<div class="empty">No matching documents found.</div>';
+                return;
+            }
+
+            resultsBox.innerHTML = data.results.map((item) => `
+                <div class="result">
+                    <strong>${item.document}</strong>
+                    <div class="meta">Score: ${item.score}</div>
+                    <p>${item.snippet}</p>
+                </div>
+            `).join("");
+        });
+    </script>
+</body>
+</html>

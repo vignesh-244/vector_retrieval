@@ -1,0 +1,5 @@
+Artificial intelligence is changing the finance industry in practical ways.
+Banks use machine learning systems to detect fraud patterns and reduce risk.
+Investment teams also rely on automation to scan large market datasets quickly.
+These tools help analysts make faster decisions, but human judgment still matters.
+Many financial companies now combine predictive models with traditional research.

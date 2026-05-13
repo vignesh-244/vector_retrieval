@@ -1,0 +1,5 @@
+Healthcare organizations collect large volumes of patient data every day.
+Doctors and researchers use data analysis to study treatment outcomes and disease trends.
+Artificial intelligence can support diagnosis by identifying patterns in medical images.
+Hospitals also use software systems to manage records, appointments, and operations.
+Reliable data handling is important for both safety and privacy.
